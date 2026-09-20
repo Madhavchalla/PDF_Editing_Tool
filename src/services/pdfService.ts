@@ -286,37 +286,40 @@ export class PdfService {
 
       const { width, height } = page.getSize();
 
-      // 1. Process Text Edits and New Text
-      const pageTexts = textElements.filter(t => t.pageIndex === pageIndex && !t.isDeleted);
+      // 1. Process Text Edits, Deletions, and New Text
+      const pageTexts = textElements.filter(t => t.pageIndex === pageIndex);
 
       for (const el of pageTexts) {
         const absX = (el.x / 100) * width;
         const absWidth = (el.width / 100) * width;
+        const absHeight = (el.height / 100) * height;
         const absY = height - ((el.y / 100) * height) - el.fontSize;
 
-        // White-out original text if modified
-        if (el.isModified && el.originalText) {
+        // White-out original text if deleted or modified
+        if (el.isDeleted || el.isModified) {
           page.drawRectangle({
             x: Math.max(0, absX - 2),
-            y: Math.max(0, absY - 4),
-            width: Math.min(width, absWidth + 12),
-            height: Math.min(height, el.fontSize * 1.4),
+            y: Math.max(0, height - ((el.y / 100) * height) - absHeight - 2),
+            width: Math.min(width - absX + 2, absWidth + 8),
+            height: Math.min(height, absHeight + 4),
             color: el.backgroundColor ? PdfService.parseHexColor(el.backgroundColor) : rgb(1, 1, 1),
           });
         }
 
-        // Render current edited text
-        const font = getFont(el.fontFamily, el.fontWeight === 'bold');
-        const textColor = PdfService.parseHexColor(el.color || '#1C1917');
+        // Render edited or new text (do NOT re-draw untouched original text to prevent double text overlay)
+        if (!el.isDeleted && (el.isModified || el.isNew)) {
+          const font = getFont(el.fontFamily, el.fontWeight === 'bold');
+          const textColor = PdfService.parseHexColor(el.color || '#1C1917');
 
-        page.drawText(el.text, {
-          x: absX,
-          y: absY,
-          size: el.fontSize,
-          font,
-          color: textColor,
-          maxWidth: width - absX - 10,
-        });
+          page.drawText(el.text, {
+            x: absX,
+            y: absY,
+            size: el.fontSize,
+            font,
+            color: textColor,
+            maxWidth: width - absX - 10,
+          });
+        }
       }
 
       // 2. Process Annotations

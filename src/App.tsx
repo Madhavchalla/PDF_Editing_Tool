@@ -394,7 +394,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] dark:bg-[#141413] flex flex-col overflow-hidden font-sans">
+    <div className="h-screen w-screen bg-[#F7F5F0] dark:bg-[#141413] flex flex-col overflow-hidden font-sans">
       {/* Header */}
       <HeaderBar
         documentName={documentName}
@@ -423,25 +423,7 @@ export const App: React.FC = () => {
         isExporting={isExporting}
       />
 
-      {/* Formatting Toolbar */}
-      <FormattingToolbar
-        activeTool={activeTool}
-        onSelectTool={(tool) => {
-          setActiveTool(tool);
-          if (tool !== 'select' && tool !== 'text-edit') {
-            setSelectedTextId(null);
-          }
-        }}
-        selectedTextElement={selectedTextElement}
-        onUpdateSelectedText={handleUpdateSelectedText}
-        onDeleteSelected={handleDeleteSelected}
-        onOpenSignatureModal={() => setIsSignatureModalOpen(true)}
-        onInsertImageClick={handleInsertImageClick}
-        strokeColor={strokeColor}
-        onStrokeColorChange={setStrokeColor}
-      />
-
-      {/* Workspace Area: Page Sidebar + Multi-Page Continuous Scroll Workspace */}
+      {/* Workspace Area: Page Sidebar + Multi-Page Continuous Scroll Viewport + Right Inspector Panel */}
       <div className="flex-1 flex overflow-hidden">
         {/* Page Thumbnail Sidebar */}
         <PageSidebar
@@ -477,6 +459,24 @@ export const App: React.FC = () => {
             </div>
           ))}
         </main>
+
+        {/* Right Inspector Panel */}
+        <FormattingToolbar
+          activeTool={activeTool}
+          onSelectTool={(tool) => {
+            setActiveTool(tool);
+            if (tool !== 'select' && tool !== 'text-edit') {
+              setSelectedTextId(null);
+            }
+          }}
+          selectedTextElement={selectedTextElement}
+          onUpdateSelectedText={handleUpdateSelectedText}
+          onDeleteSelected={handleDeleteSelected}
+          onOpenSignatureModal={() => setIsSignatureModalOpen(true)}
+          onInsertImageClick={handleInsertImageClick}
+          strokeColor={strokeColor}
+          onStrokeColorChange={setStrokeColor}
+        />
       </div>
 
       {/* Modals */}
