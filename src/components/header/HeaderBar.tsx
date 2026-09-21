@@ -9,11 +9,9 @@ import {
   ZoomOut,
   Maximize2,
   ShieldAlert,
-  Stamp as StampIcon,
   FolderOpen,
   LayoutGrid,
 } from 'lucide-react';
-import { PrivacyBadge } from '../common/PrivacyBadge';
 
 interface HeaderBarProps {
   documentName: string;
@@ -22,7 +20,7 @@ interface HeaderBarProps {
   onExportPdf: () => void;
   onExportDocx: () => void;
   onOpenPageOrganizer: () => void;
-  onOpenWatermarkModal: () => void;
+  onOpenWatermarkModal?: () => void;
   onOpenSecurityModal: () => void;
   canUndo: boolean;
   canRedo: boolean;
@@ -40,7 +38,6 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   onExportPdf,
   onExportDocx,
   onOpenPageOrganizer,
-  onOpenWatermarkModal,
   onOpenSecurityModal,
   canUndo,
   canRedo,
@@ -77,8 +74,6 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             placeholder="Document Name"
           />
         </div>
-
-        <PrivacyBadge />
       </div>
 
       {/* Middle: Undo/Redo & Zoom Controls */}
@@ -137,15 +132,6 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         >
           <LayoutGrid className="w-3.5 h-3.5 text-stone-600 dark:text-stone-400" />
           <span>Pages</span>
-        </button>
-
-        <button
-          onClick={onOpenWatermarkModal}
-          className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-stone-700 dark:text-stone-300 bg-white dark:bg-[#282724] border border-[#E5E0D8] dark:border-[#383632] hover:bg-[#F5F2EB] dark:hover:bg-[#32312D] rounded-md transition-colors"
-          title="Add Watermark"
-        >
-          <StampIcon className="w-3.5 h-3.5 text-amber-600" />
-          <span>Watermark</span>
         </button>
 
         <button

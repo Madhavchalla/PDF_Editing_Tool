@@ -21,7 +21,6 @@ import { PdfViewerCanvas } from './components/editor/PdfViewerCanvas';
 import { LandingPage } from './components/landing/LandingPage';
 import { SignatureModal } from './components/modals/SignatureModal';
 import { DocxConvertModal } from './components/modals/DocxConvertModal';
-import { WatermarkModal } from './components/modals/WatermarkModal';
 import { SecurityModal } from './components/modals/SecurityModal';
 import { PageOrganizerModal } from './components/pageManager/PageOrganizerModal';
 
@@ -412,7 +411,6 @@ export const App: React.FC = () => {
         onExportPdf={handleExportPdf}
         onExportDocx={() => setIsDocxModalOpen(true)}
         onOpenPageOrganizer={() => setIsOrganizerModalOpen(true)}
-        onOpenWatermarkModal={() => setIsWatermarkModalOpen(true)}
         onOpenSecurityModal={() => setIsSecurityModalOpen(true)}
         canUndo={canUndo}
         canRedo={canRedo}
@@ -492,13 +490,6 @@ export const App: React.FC = () => {
         onExportDocx={handleExportDocx}
         onImportDocx={handleOpenFile}
         isProcessing={isExporting}
-      />
-
-      <WatermarkModal
-        isOpen={isWatermarkModalOpen}
-        onClose={() => setIsWatermarkModalOpen(false)}
-        watermark={watermark}
-        onUpdateWatermark={setWatermark}
       />
 
       <SecurityModal

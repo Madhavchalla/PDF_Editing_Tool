@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import { 
   FileText, 
   Upload, 
-  ShieldCheck, 
   Sparkles, 
   FileSpreadsheet, 
   Type, 
   PenTool, 
   Layers
 } from 'lucide-react';
-import { PrivacyBadge } from '../common/PrivacyBadge';
 
 interface LandingPageProps {
   onOpenFile: (file: File) => void;
@@ -49,8 +47,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             PaperCraft <span className="text-[#C85A32] font-sans text-xs px-2 py-0.5 rounded bg-[#F0EBE1]">Studio</span>
           </span>
         </div>
-
-        <PrivacyBadge />
       </nav>
 
       {/* Hero Content */}
