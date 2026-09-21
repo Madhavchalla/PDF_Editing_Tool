@@ -15,6 +15,8 @@ interface PdfViewerCanvasProps {
   strokeColor: string;
   onSelectText: (id: string | null) => void;
   onUpdateText: (id: string, newText: string) => void;
+  onUpdateTextPosition: (id: string, x: number, y: number) => void;
+  onUpdateTextBounds?: (id: string, x: number, width: number) => void;
   onAddAnnotation: (ann: Annotation) => void;
   onAddTextAtPosition: (xPercent: number, yPercent: number) => void;
 }
@@ -30,6 +32,8 @@ export const PdfViewerCanvas: React.FC<PdfViewerCanvasProps> = ({
   strokeColor,
   onSelectText,
   onUpdateText,
+  onUpdateTextPosition,
+  onUpdateTextBounds,
   onAddAnnotation,
   onAddTextAtPosition,
 }) => {
@@ -122,6 +126,8 @@ export const PdfViewerCanvas: React.FC<PdfViewerCanvasProps> = ({
           selectedTextId={selectedTextId}
           onSelectText={onSelectText}
           onUpdateText={onUpdateText}
+          onUpdateTextPosition={onUpdateTextPosition}
+          onUpdateTextBounds={onUpdateTextBounds}
           activeTool={activeTool}
           zoom={zoom}
         />

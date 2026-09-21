@@ -143,6 +143,44 @@ export const App: React.FC = () => {
     });
   };
 
+  const handleUpdateTextPosition = (id: string, newX: number, newY: number) => {
+    const updated = textElements.map(t => {
+      if (t.id === id) {
+        return {
+          ...t,
+          x: newX,
+          y: newY,
+          isModified: true,
+        };
+      }
+      return t;
+    });
+
+    pushState({
+      ...currentState,
+      textElements: updated,
+    });
+  };
+
+  const handleUpdateTextBounds = (id: string, newX: number, newWidth: number) => {
+    const updated = textElements.map(t => {
+      if (t.id === id) {
+        return {
+          ...t,
+          x: newX,
+          width: newWidth,
+          isModified: true,
+        };
+      }
+      return t;
+    });
+
+    pushState({
+      ...currentState,
+      textElements: updated,
+    });
+  };
+
   const handleUpdateSelectedText = (updatedProps: Partial<TextElement>) => {
     if (!selectedTextId) return;
 
@@ -451,6 +489,8 @@ export const App: React.FC = () => {
                 strokeColor={strokeColor}
                 onSelectText={setSelectedTextId}
                 onUpdateText={handleUpdateText}
+                onUpdateTextPosition={handleUpdateTextPosition}
+                onUpdateTextBounds={handleUpdateTextBounds}
                 onAddAnnotation={handleAddAnnotation}
                 onAddTextAtPosition={handleAddTextAtPosition}
               />

@@ -1,6 +1,7 @@
 export type ActiveTool = 
   | 'select'
   | 'text-edit'
+  | 'move-text'
   | 'text-add'
   | 'draw-pen'
   | 'draw-highlighter'
@@ -18,12 +19,16 @@ export type FontCategory = 'sans' | 'serif' | 'mono' | 'handwriting';
 export interface TextElement {
   id: string;
   pageIndex: number;
-  x: number; // Percentage or points relative to page dimensions (0-100%)
+  x: number; // Percentage relative to page dimensions (0-100%)
   y: number;
   width: number;
   height: number;
   text: string;
   originalText?: string;
+  originalX?: number;
+  originalY?: number;
+  originalWidth?: number;
+  originalHeight?: number;
   fontSize: number; // in pt
   fontFamily: string;
   color: string;

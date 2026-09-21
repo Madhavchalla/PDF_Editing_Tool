@@ -203,6 +203,10 @@ export class PdfService {
           height: heightPercent,
           text: mergedStr,
           originalText: mergedStr,
+          originalX: xPercent,
+          originalY: yPercent,
+          originalWidth: widthPercent,
+          originalHeight: heightPercent,
           fontSize: Math.max(8, Number(fontHeight.toFixed(2))),
           fontFamily,
           color: '#1C1917',
@@ -297,11 +301,20 @@ export class PdfService {
 
         // White-out original text if deleted or modified
         if (el.isDeleted || el.isModified) {
+          const eraseX = el.originalX !== undefined ? el.originalX : el.x;
+          const eraseY = el.originalY !== undefined ? el.originalY : el.y;
+          const eraseW = el.originalWidth !== undefined ? el.originalWidth : el.width;
+          const eraseH = el.originalHeight !== undefined ? el.originalHeight : el.height;
+
+          const eraseAbsX = (eraseX / 100) * width;
+          const eraseAbsW = (eraseW / 100) * width;
+          const eraseAbsH = (eraseH / 100) * height;
+
           page.drawRectangle({
-            x: Math.max(0, absX - 2),
-            y: Math.max(0, height - ((el.y / 100) * height) - absHeight - 2),
-            width: Math.min(width - absX + 2, absWidth + 8),
-            height: Math.min(height, absHeight + 4),
+            x: Math.max(0, eraseAbsX - 2),
+            y: Math.max(0, height - ((eraseY / 100) * height) - eraseAbsH - 2),
+            width: Math.min(width - eraseAbsX + 2, eraseAbsW + 8),
+            height: Math.min(height, eraseAbsH + 4),
             color: el.backgroundColor ? PdfService.parseHexColor(el.backgroundColor) : rgb(1, 1, 1),
           });
         }

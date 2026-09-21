@@ -15,6 +15,7 @@ import {
   Sliders,
   Type as TypeIcon,
   Minus,
+  Move,
 } from 'lucide-react';
 import { ActiveTool, TextElement } from '../../types/pdf';
 import { ColorPicker } from '../common/ColorPicker';
@@ -83,16 +84,16 @@ export const FormattingToolbar: React.FC<FormattingToolbarProps> = ({
             <button
               onClick={() => onSelectTool('text-edit')}
               className={`w-full px-3 py-2 rounded-md text-xs font-medium flex items-center justify-between transition-colors ${
-                activeTool === 'text-edit'
+                activeTool === 'text-edit' || activeTool === 'move-text'
                   ? 'bg-white dark:bg-[#383632] text-[#C85A32] font-semibold shadow-xs'
                   : 'text-stone-700 dark:text-stone-300 hover:bg-white/50'
               }`}
             >
               <div className="flex items-center gap-2">
-                <Type className="w-4 h-4" />
-                <span>Edit PDF Text</span>
+                <Move className="w-4 h-4 text-[#C85A32]" />
+                <span>Move & Edit Text</span>
               </div>
-              {activeTool === 'text-edit' && <span className="w-1.5 h-1.5 rounded-full bg-[#C85A32]" />}
+              {(activeTool === 'text-edit' || activeTool === 'move-text') && <span className="w-1.5 h-1.5 rounded-full bg-[#C85A32]" />}
             </button>
 
             <button
