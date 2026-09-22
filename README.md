@@ -13,7 +13,12 @@ PaperCraft Studio is a 100% client-side, privacy-focused web application that al
 > *It is built for speed, privacy, and usability, not to replace full desktop PDF suites for every advanced workflow.*
 
 ---
+## Outputs
+![](output1)
 
+![](output2)
+
+  ![](output3)
 ## 🌟 Features
 
 ### 1. 📝 Direct Inline Text Editing
