@@ -62,11 +62,10 @@ export const PageSidebar: React.FC<PageSidebarProps> = ({
             <div
               key={`thumb-${index}`}
               onClick={() => onSelectPage(index)}
-              className={`group relative p-2 rounded-lg border transition-all cursor-pointer ${
-                isActive
+              className={`group relative p-2 rounded-lg border transition-all cursor-pointer ${isActive
                   ? 'bg-white border-[#C85A32] shadow-paper-md ring-2 ring-[#C85A32]/20'
                   : 'bg-white/60 border-stone-200 hover:border-stone-400'
-              }`}
+                }`}
             >
               {/* Real PDF Page Thumbnail */}
               <div className="aspect-[1/1.4] bg-white border border-stone-200 rounded flex items-center justify-center relative overflow-hidden shadow-inner">

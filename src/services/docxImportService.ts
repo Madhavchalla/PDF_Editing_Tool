@@ -7,16 +7,16 @@ export class DocxImportService {
    */
   static async convertDocxToPdf(docxFile: File | ArrayBuffer): Promise<Uint8Array> {
     const arrayBuffer = docxFile instanceof File ? await docxFile.arrayBuffer() : docxFile;
-    
+
     // Parse docx to raw text and HTML structure
     const result = await mammoth.convertToHtml({ arrayBuffer });
     const htmlString = result.value;
-    
+
     // Create new PDF Document
     const pdfDoc = await PDFDocument.create();
     const fontHelvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const fontHelveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-    
+
     // Standard A4 dimensions
     const pageWidth = 595.28;
     const pageHeight = 841.89;

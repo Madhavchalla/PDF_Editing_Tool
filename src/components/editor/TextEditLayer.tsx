@@ -27,14 +27,24 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
 }) => {
   const pageTexts = textElements.filter(t => t.pageIndex === pageIndex);
 
+  // Helper to extract clientX and clientY from mouse or touch event
+  const getClientCoords = (e: React.MouseEvent | React.TouchEvent | MouseEvent | TouchEvent) => {
+    if ('touches' in e && e.touches && e.touches.length > 0) {
+      return { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY };
+    }
+    if ('changedTouches' in e && e.changedTouches && e.changedTouches.length > 0) {
+      return { clientX: e.changedTouches[0].clientX, clientY: e.changedTouches[0].clientY };
+    }
+    const mouseEvt = e as MouseEvent;
+    return { clientX: mouseEvt.clientX, clientY: mouseEvt.clientY };
+  };
+
   // Drag Whole Text Box Position (x, y)
-  const handleDragStart = (e: React.MouseEvent, item: TextElement) => {
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent, item: TextElement) => {
     e.stopPropagation();
-    e.preventDefault();
     onSelectText(item.id);
 
-    const startMouseX = e.clientX;
-    const startMouseY = e.clientY;
+    const { clientX: startMouseX, clientY: startMouseY } = getClientCoords(e);
     const startX = item.x;
     const startY = item.y;
 
@@ -49,42 +59,46 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
     let finalX = startX;
     let finalY = startY;
 
-    const handleMouseMove = (moveEvt: MouseEvent) => {
-      const dx = moveEvt.clientX - startMouseX;
-      const dy = moveEvt.clientY - startMouseY;
+    const handleMove = (moveEvt: MouseEvent | TouchEvent) => {
+      const { clientX, clientY } = getClientCoords(moveEvt);
+      const dx = clientX - startMouseX;
+      const dy = clientY - startMouseY;
       const dxPercent = (dx / pageW) * 100;
       const dyPercent = (dy / pageH) * 100;
 
       finalX = Math.max(0, Math.min(96, startX + dxPercent));
       finalY = Math.max(0, Math.min(96, startY + dyPercent));
 
-      // Direct DOM style update during mousemove for ultra-smooth 60fps drag
+      // Direct DOM style update during move for 60fps drag
       if (dragTargetEl) {
         dragTargetEl.style.left = `${finalX}%`;
         dragTargetEl.style.top = `${finalY}%`;
       }
     };
 
-    const handleMouseUp = () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+    const handleEnd = () => {
+      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('mouseup', handleEnd);
+      window.removeEventListener('touchmove', handleMove);
+      window.removeEventListener('touchend', handleEnd);
 
       if (onUpdateTextPosition && (finalX !== startX || finalY !== startY)) {
         onUpdateTextPosition(item.id, Number(finalX.toFixed(2)), Number(finalY.toFixed(2)));
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+    window.addEventListener('touchmove', handleMove, { passive: false });
+    window.addEventListener('touchend', handleEnd);
   };
 
   // Stretch Left Edge Handle Dragging
-  const handleResizeLeftStart = (e: React.MouseEvent, item: TextElement) => {
+  const handleResizeLeftStart = (e: React.MouseEvent | React.TouchEvent, item: TextElement) => {
     e.stopPropagation();
-    e.preventDefault();
     onSelectText(item.id);
 
-    const startMouseX = e.clientX;
+    const { clientX: startMouseX } = getClientCoords(e);
     const startX = item.x;
     const startW = item.width;
 
@@ -96,8 +110,9 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
     let finalX = startX;
     let finalW = startW;
 
-    const handleMouseMove = (moveEvt: MouseEvent) => {
-      const dx = moveEvt.clientX - startMouseX;
+    const handleMove = (moveEvt: MouseEvent | TouchEvent) => {
+      const { clientX } = getClientCoords(moveEvt);
+      const dx = clientX - startMouseX;
       const dxPercent = (dx / pageW) * 100;
 
       finalX = Math.max(0, Math.min(startX + startW - 2, startX + dxPercent));
@@ -109,26 +124,29 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
       }
     };
 
-    const handleMouseUp = () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+    const handleEnd = () => {
+      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('mouseup', handleEnd);
+      window.removeEventListener('touchmove', handleMove);
+      window.removeEventListener('touchend', handleEnd);
 
       if (onUpdateTextBounds && (finalX !== startX || finalW !== startW)) {
         onUpdateTextBounds(item.id, Number(finalX.toFixed(2)), Number(finalW.toFixed(2)));
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+    window.addEventListener('touchmove', handleMove, { passive: false });
+    window.addEventListener('touchend', handleEnd);
   };
 
   // Stretch Right Edge Handle Dragging
-  const handleResizeRightStart = (e: React.MouseEvent, item: TextElement) => {
+  const handleResizeRightStart = (e: React.MouseEvent | React.TouchEvent, item: TextElement) => {
     e.stopPropagation();
-    e.preventDefault();
     onSelectText(item.id);
 
-    const startMouseX = e.clientX;
+    const { clientX: startMouseX } = getClientCoords(e);
     const startW = item.width;
 
     const dragTargetEl = (e.currentTarget as HTMLElement).closest('.text-block-container') as HTMLElement;
@@ -138,8 +156,9 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
     const pageW = pageContainer.getBoundingClientRect().width;
     let finalW = startW;
 
-    const handleMouseMove = (moveEvt: MouseEvent) => {
-      const dx = moveEvt.clientX - startMouseX;
+    const handleMove = (moveEvt: MouseEvent | TouchEvent) => {
+      const { clientX } = getClientCoords(moveEvt);
+      const dx = clientX - startMouseX;
       const dxPercent = (dx / pageW) * 100;
 
       finalW = Math.max(2, Math.min(100 - item.x, startW + dxPercent));
@@ -149,17 +168,21 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
       }
     };
 
-    const handleMouseUp = () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+    const handleEnd = () => {
+      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('mouseup', handleEnd);
+      window.removeEventListener('touchmove', handleMove);
+      window.removeEventListener('touchend', handleEnd);
 
       if (onUpdateTextBounds && finalW !== startW) {
         onUpdateTextBounds(item.id, Number(item.x.toFixed(2)), Number(finalW.toFixed(2)));
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+    window.addEventListener('touchmove', handleMove, { passive: false });
+    window.addEventListener('touchend', handleEnd);
   };
 
   return (
@@ -247,29 +270,36 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
               {isSelected && (
                 <div
                   onMouseDown={(e) => handleDragStart(e, item)}
-                  className="absolute -top-5 right-0 h-5 px-1.5 bg-blue-600 text-white rounded-t flex items-center justify-center cursor-move select-none shadow-xs z-40 hover:bg-blue-700 transition-colors"
-                  title="Click & Drag to move text block in any direction"
+                  onTouchStart={(e) => handleDragStart(e, item)}
+                  className="absolute -top-6 right-0 h-6 px-2 bg-blue-600 text-white rounded-t flex items-center justify-center cursor-move select-none shadow-xs z-40 hover:bg-blue-700 transition-colors"
+                  title="Click or Touch & Drag to move text block"
                 >
-                  <Move className="w-3 h-3 text-white cursor-move" />
+                  <Move className="w-3.5 h-3.5 text-white cursor-move" />
                 </div>
               )}
 
-              {/* Left Stretch Handle (Blue Circle) */}
+              {/* Left Stretch Handle (Blue Circle with enlarged touch target) */}
               {isSelected && (
                 <div
                   onMouseDown={(e) => handleResizeLeftStart(e, item)}
-                  className="absolute -left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-blue-600 border-2 border-white rounded-full cursor-ew-resize z-50 shadow-md hover:scale-125 transition-transform"
-                  title="Click & Drag to stretch text box left"
-                />
+                  onTouchStart={(e) => handleResizeLeftStart(e, item)}
+                  className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center cursor-ew-resize z-50 touch-none"
+                  title="Drag to stretch left"
+                >
+                  <div className="w-3.5 h-3.5 bg-blue-600 border-2 border-white rounded-full shadow-md hover:scale-125 transition-transform" />
+                </div>
               )}
 
-              {/* Right Stretch Handle (Blue Circle) */}
+              {/* Right Stretch Handle (Blue Circle with enlarged touch target) */}
               {isSelected && (
                 <div
                   onMouseDown={(e) => handleResizeRightStart(e, item)}
-                  className="absolute -right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-blue-600 border-2 border-white rounded-full cursor-ew-resize z-50 shadow-md hover:scale-125 transition-transform"
-                  title="Click & Drag to stretch text box right"
-                />
+                  onTouchStart={(e) => handleResizeRightStart(e, item)}
+                  className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center cursor-ew-resize z-50 touch-none"
+                  title="Drag to stretch right"
+                >
+                  <div className="w-3.5 h-3.5 bg-blue-600 border-2 border-white rounded-full shadow-md hover:scale-125 transition-transform" />
+                </div>
               )}
 
               {isActivelyEditing || isModifiedOrNew ? (
@@ -300,6 +330,11 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
                 // PDF House Style Click Target
                 <div 
                   onMouseDown={(e) => {
+                    if (activeTool === 'move-text') {
+                      handleDragStart(e, item);
+                    }
+                  }}
+                  onTouchStart={(e) => {
                     if (activeTool === 'move-text') {
                       handleDragStart(e, item);
                     }

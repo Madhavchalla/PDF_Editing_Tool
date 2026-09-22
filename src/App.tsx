@@ -3,14 +3,14 @@ import confetti from 'canvas-confetti';
 import { PdfService, ExtractedPdfData } from './services/pdfService';
 import { DocxExportService } from './services/docxExportService';
 import { DocxImportService } from './services/docxImportService';
-import { 
-  ActiveTool, 
-  TextElement, 
-  Annotation, 
-  PageMeta, 
-  WatermarkConfig, 
-  SecurityConfig, 
-  HistoryState 
+import {
+  ActiveTool,
+  TextElement,
+  Annotation,
+  PageMeta,
+  WatermarkConfig,
+  SecurityConfig,
+  HistoryState
 } from './types/pdf';
 import { useHistory } from './hooks/useHistory';
 
@@ -425,7 +425,7 @@ export const App: React.FC = () => {
     return (
       <LandingPage
         onOpenFile={handleOpenFile}
-        onLoadSamplePdf={() => {}}
+        onLoadSamplePdf={() => { }}
       />
     );
   }
@@ -439,7 +439,7 @@ export const App: React.FC = () => {
         onOpenFile={() => {
           const input = document.createElement('input');
           input.type = 'file';
-          input.accept = '.pdf,.docx';
+          input.accept = '.pdf';
           input.onchange = (e: any) => {
             const file = e.target.files?.[0];
             if (file) handleOpenFile(file);
@@ -447,7 +447,6 @@ export const App: React.FC = () => {
           input.click();
         }}
         onExportPdf={handleExportPdf}
-        onExportDocx={() => setIsDocxModalOpen(true)}
         onOpenPageOrganizer={() => setIsOrganizerModalOpen(true)}
         onOpenSecurityModal={() => setIsSecurityModalOpen(true)}
         canUndo={canUndo}
@@ -457,6 +456,8 @@ export const App: React.FC = () => {
         zoom={zoom}
         onZoomChange={setZoom}
         isExporting={isExporting}
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
 
       {/* Workspace Area: Page Sidebar + Multi-Page Continuous Scroll Viewport + Right Inspector Panel */}
@@ -524,14 +525,6 @@ export const App: React.FC = () => {
         onSaveSignature={handleSaveSignature}
       />
 
-      <DocxConvertModal
-        isOpen={isDocxModalOpen}
-        onClose={() => setIsDocxModalOpen(false)}
-        onExportDocx={handleExportDocx}
-        onImportDocx={handleOpenFile}
-        isProcessing={isExporting}
-      />
-
       <SecurityModal
         isOpen={isSecurityModalOpen}
         onClose={() => setIsSecurityModalOpen(false)}
@@ -547,7 +540,7 @@ export const App: React.FC = () => {
         onRotatePage={handleRotatePage}
         onDeletePage={handleDeletePage}
         onDuplicatePage={handleDuplicatePage}
-        onReorderPages={() => {}}
+        onReorderPages={() => { }}
       />
     </div>
   );

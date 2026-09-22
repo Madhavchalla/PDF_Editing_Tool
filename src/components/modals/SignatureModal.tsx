@@ -102,8 +102,36 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
     }
   };
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    ctx.beginPath();
+    ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+    ctx.strokeStyle = sigColor;
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    setIsDrawing(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+    ctx.stroke();
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/50 backdrop-blur-sm p-4 select-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/50 backdrop-blur-sm p-3 sm:p-4 select-none">
       <div className="bg-[#FAF9F6] dark:bg-[#1E1E1C] border border-[#E5E0D8] dark:border-[#383632] rounded-xl shadow-paper-lg w-full max-w-lg overflow-hidden">
         {/* Modal Header */}
         <div className="p-4 border-b border-[#E5E0D8] dark:border-[#2E2E2A] flex items-center justify-between">
@@ -159,10 +187,10 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {activeTab === 'draw' && (
             <div>
-              <div className="border border-stone-300 dark:border-stone-700 bg-white rounded-lg shadow-inner relative">
+              <div className="border border-stone-300 dark:border-stone-700 bg-white rounded-lg shadow-inner relative touch-none">
                 <canvas
                   ref={canvasRef}
                   width={440}
@@ -171,6 +199,9 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
                   onMouseMove={draw}
                   onMouseUp={stopDrawing}
                   onMouseLeave={stopDrawing}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={stopDrawing}
                   className="w-full h-[150px] cursor-crosshair block"
                 />
                 <button

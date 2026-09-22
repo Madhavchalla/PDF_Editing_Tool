@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { 
-  FileText, 
-  Upload, 
-  Sparkles, 
-  FileSpreadsheet, 
-  Type, 
-  PenTool, 
+import {
+  FileText,
+  Upload,
+  Sparkles,
+  FileSpreadsheet,
+  Type,
+  PenTool,
   Layers
 } from 'lucide-react';
 
@@ -74,11 +74,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             }}
             onDragLeave={() => setIsDragOver(false)}
             onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-2xl p-10 transition-all cursor-pointer shadow-paper-lg relative overflow-hidden ${
-              isDragOver
-                ? 'border-[#C85A32] bg-[#FDF6F0] scale-[1.01]'
-                : 'border-[#D4CBBB] bg-white hover:border-[#C85A32] hover:bg-[#FAF9F6]'
-            }`}
+            className={`border-2 border-dashed rounded-2xl p-10 transition-all cursor-pointer shadow-paper-lg relative overflow-hidden ${isDragOver
+              ? 'border-[#C85A32] bg-[#FDF6F0] scale-[1.01]'
+              : 'border-[#D4CBBB] bg-white hover:border-[#C85A32] hover:bg-[#FAF9F6]'
+              }`}
           >
             <input
               type="file"

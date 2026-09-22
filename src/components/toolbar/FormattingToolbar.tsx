@@ -68,11 +68,10 @@ export const FormattingToolbar: React.FC<FormattingToolbarProps> = ({
           <div className="flex flex-col gap-1.5 bg-[#EFEBE1] dark:bg-[#292825] p-1.5 rounded-lg border border-[#E5E0D8] dark:border-[#383632]">
             <button
               onClick={() => onSelectTool('select')}
-              className={`w-full px-3 py-2 rounded-md text-xs font-medium flex items-center justify-between transition-colors ${
-                activeTool === 'select'
+              className={`w-full px-3 py-2 rounded-md text-xs font-medium flex items-center justify-between transition-colors ${activeTool === 'select'
                   ? 'bg-white dark:bg-[#383632] text-[#C85A32] font-semibold shadow-xs'
                   : 'text-stone-700 dark:text-stone-300 hover:bg-white/50'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-2">
                 <MousePointer className="w-4 h-4" />
@@ -83,11 +82,10 @@ export const FormattingToolbar: React.FC<FormattingToolbarProps> = ({
 
             <button
               onClick={() => onSelectTool('text-edit')}
-              className={`w-full px-3 py-2 rounded-md text-xs font-medium flex items-center justify-between transition-colors ${
-                activeTool === 'text-edit' || activeTool === 'move-text'
+              className={`w-full px-3 py-2 rounded-md text-xs font-medium flex items-center justify-between transition-colors ${activeTool === 'text-edit' || activeTool === 'move-text'
                   ? 'bg-white dark:bg-[#383632] text-[#C85A32] font-semibold shadow-xs'
                   : 'text-stone-700 dark:text-stone-300 hover:bg-white/50'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-2">
                 <Move className="w-4 h-4 text-[#C85A32]" />
@@ -98,11 +96,10 @@ export const FormattingToolbar: React.FC<FormattingToolbarProps> = ({
 
             <button
               onClick={() => onSelectTool('text-add')}
-              className={`w-full px-3 py-2 rounded-md text-xs font-medium flex items-center justify-between transition-colors ${
-                activeTool === 'text-add'
+              className={`w-full px-3 py-2 rounded-md text-xs font-medium flex items-center justify-between transition-colors ${activeTool === 'text-add'
                   ? 'bg-white dark:bg-[#383632] text-[#C85A32] font-semibold shadow-xs'
                   : 'text-stone-700 dark:text-stone-300 hover:bg-white/50'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-2">
                 <Plus className="w-4 h-4 text-[#C85A32]" />
@@ -198,25 +195,22 @@ export const FormattingToolbar: React.FC<FormattingToolbarProps> = ({
                 <div className="flex items-center gap-1 bg-[#F5F2EB] dark:bg-[#1E1E1C] p-1 rounded-lg border border-stone-200 dark:border-stone-700">
                   <button
                     onClick={() => onUpdateSelectedText({ fontWeight: selectedTextElement.fontWeight === 'bold' ? 'normal' : 'bold' })}
-                    className={`flex-1 py-1.5 rounded text-xs font-bold transition-colors ${
-                      selectedTextElement.fontWeight === 'bold' ? 'bg-[#C85A32] text-white shadow-xs' : 'text-stone-700 dark:text-stone-300 hover:bg-white'
-                    }`}
+                    className={`flex-1 py-1.5 rounded text-xs font-bold transition-colors ${selectedTextElement.fontWeight === 'bold' ? 'bg-[#C85A32] text-white shadow-xs' : 'text-stone-700 dark:text-stone-300 hover:bg-white'
+                      }`}
                   >
                     B
                   </button>
                   <button
                     onClick={() => onUpdateSelectedText({ fontStyle: selectedTextElement.fontStyle === 'italic' ? 'normal' : 'italic' })}
-                    className={`flex-1 py-1.5 rounded text-xs font-semibold italic transition-colors ${
-                      selectedTextElement.fontStyle === 'italic' ? 'bg-[#C85A32] text-white shadow-xs' : 'text-stone-700 dark:text-stone-300 hover:bg-white'
-                    }`}
+                    className={`flex-1 py-1.5 rounded text-xs font-semibold italic transition-colors ${selectedTextElement.fontStyle === 'italic' ? 'bg-[#C85A32] text-white shadow-xs' : 'text-stone-700 dark:text-stone-300 hover:bg-white'
+                      }`}
                   >
                     I
                   </button>
                   <button
                     onClick={() => onUpdateSelectedText({ textDecoration: selectedTextElement.textDecoration === 'underline' ? 'none' : 'underline' })}
-                    className={`flex-1 py-1.5 rounded text-xs flex items-center justify-center transition-colors ${
-                      selectedTextElement.textDecoration === 'underline' ? 'bg-[#C85A32] text-white shadow-xs' : 'text-stone-700 dark:text-stone-300 hover:bg-white'
-                    }`}
+                    className={`flex-1 py-1.5 rounded text-xs flex items-center justify-center transition-colors ${selectedTextElement.textDecoration === 'underline' ? 'bg-[#C85A32] text-white shadow-xs' : 'text-stone-700 dark:text-stone-300 hover:bg-white'
+                      }`}
                   >
                     <Underline className="w-3.5 h-3.5" />
                   </button>
@@ -229,25 +223,22 @@ export const FormattingToolbar: React.FC<FormattingToolbarProps> = ({
                 <div className="flex items-center gap-1 bg-[#F5F2EB] dark:bg-[#1E1E1C] p-1 rounded-lg border border-stone-200 dark:border-stone-700">
                   <button
                     onClick={() => onUpdateSelectedText({ textAlign: 'left' })}
-                    className={`flex-1 py-1.5 rounded text-xs flex items-center justify-center ${
-                      selectedTextElement.textAlign === 'left' ? 'bg-white dark:bg-[#383632] text-[#C85A32] font-semibold shadow-xs' : 'text-stone-700 dark:text-stone-300'
-                    }`}
+                    className={`flex-1 py-1.5 rounded text-xs flex items-center justify-center ${selectedTextElement.textAlign === 'left' ? 'bg-white dark:bg-[#383632] text-[#C85A32] font-semibold shadow-xs' : 'text-stone-700 dark:text-stone-300'
+                      }`}
                   >
                     <AlignLeft className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => onUpdateSelectedText({ textAlign: 'center' })}
-                    className={`flex-1 py-1.5 rounded text-xs flex items-center justify-center ${
-                      selectedTextElement.textAlign === 'center' ? 'bg-white dark:bg-[#383632] text-[#C85A32] font-semibold shadow-xs' : 'text-stone-700 dark:text-stone-300'
-                    }`}
+                    className={`flex-1 py-1.5 rounded text-xs flex items-center justify-center ${selectedTextElement.textAlign === 'center' ? 'bg-white dark:bg-[#383632] text-[#C85A32] font-semibold shadow-xs' : 'text-stone-700 dark:text-stone-300'
+                      }`}
                   >
                     <AlignCenter className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => onUpdateSelectedText({ textAlign: 'right' })}
-                    className={`flex-1 py-1.5 rounded text-xs flex items-center justify-center ${
-                      selectedTextElement.textAlign === 'right' ? 'bg-white dark:bg-[#383632] text-[#C85A32] font-semibold shadow-xs' : 'text-stone-700 dark:text-stone-300'
-                    }`}
+                    className={`flex-1 py-1.5 rounded text-xs flex items-center justify-center ${selectedTextElement.textAlign === 'right' ? 'bg-white dark:bg-[#383632] text-[#C85A32] font-semibold shadow-xs' : 'text-stone-700 dark:text-stone-300'
+                      }`}
                   >
                     <AlignRight className="w-3.5 h-3.5" />
                   </button>

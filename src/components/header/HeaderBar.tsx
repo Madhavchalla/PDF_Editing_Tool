@@ -2,7 +2,6 @@ import React from 'react';
 import {
   FileText,
   Download,
-  FileSpreadsheet,
   Undo2,
   Redo2,
   ZoomIn,
@@ -11,6 +10,7 @@ import {
   ShieldAlert,
   FolderOpen,
   LayoutGrid,
+  PanelLeft,
 } from 'lucide-react';
 
 interface HeaderBarProps {
@@ -18,7 +18,6 @@ interface HeaderBarProps {
   onDocumentNameChange: (name: string) => void;
   onOpenFile: () => void;
   onExportPdf: () => void;
-  onExportDocx: () => void;
   onOpenPageOrganizer: () => void;
   onOpenWatermarkModal?: () => void;
   onOpenSecurityModal: () => void;
@@ -29,6 +28,8 @@ interface HeaderBarProps {
   zoom: number;
   onZoomChange: (newZoom: number) => void;
   isExporting: boolean;
+  isSidebarOpen?: boolean;
+  onToggleSidebar?: () => void;
 }
 
 export const HeaderBar: React.FC<HeaderBarProps> = ({
@@ -36,7 +37,6 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   onDocumentNameChange,
   onOpenFile,
   onExportPdf,
-  onExportDocx,
   onOpenPageOrganizer,
   onOpenSecurityModal,
   canUndo,
@@ -46,11 +46,27 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   zoom,
   onZoomChange,
   isExporting,
+  isSidebarOpen,
+  onToggleSidebar,
 }) => {
   return (
     <header className="h-14 bg-[#FAF9F6] dark:bg-[#1E1E1C] border-b border-[#E5E0D8] dark:border-[#2E2E2A] px-4 flex items-center justify-between select-none shadow-paper-sm z-30">
-      {/* Left: Brand logo & Document Title */}
-      <div className="flex items-center gap-3">
+      {/* Left: Brand logo, Sidebar Toggle & Document Title */}
+      <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+        {onToggleSidebar && (
+          <button
+            onClick={onToggleSidebar}
+            className={`p-1.5 rounded-lg border transition-colors ${
+              isSidebarOpen
+                ? 'bg-[#EFEBE1] dark:bg-[#292825] border-[#C85A32] text-[#C85A32]'
+                : 'bg-white dark:bg-[#282724] border-[#E5E0D8] dark:border-[#383632] text-stone-700 dark:text-stone-300 hover:bg-[#F5F2EB]'
+            }`}
+            title="Toggle Page Thumbnails Sidebar"
+          >
+            <PanelLeft className="w-4 h-4" />
+          </button>
+        )}
+
         <div className="flex items-center gap-2 cursor-pointer" onClick={onOpenFile}>
           <div className="w-9 h-9 rounded-lg bg-[#C85A32] text-white flex items-center justify-center shadow-sm hover:bg-[#b24e2a] transition-colors">
             <FileText className="w-5 h-5" />
@@ -149,16 +165,6 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         >
           <FolderOpen className="w-3.5 h-3.5 text-stone-600 dark:text-stone-400" />
           <span className="hidden sm:inline">Open</span>
-        </button>
-
-        {/* Export to Word button */}
-        <button
-          onClick={onExportDocx}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/60 rounded-md transition-all shadow-sm"
-          title="Export PDF to Word (.docx)"
-        >
-          <FileSpreadsheet className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-          <span>Export DOCX</span>
         </button>
 
         {/* Main Download PDF button */}
