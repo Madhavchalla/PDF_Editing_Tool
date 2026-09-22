@@ -2,12 +2,15 @@
 
 > **Next-Generation In-Browser PDF Editor & Toolkit**
 
-PaperCraft Studio is a 100% client-side, privacy-focused web application that allows users to edit, annotate, organize, sign, watermark, and protect PDF documents directly in their browser—without uploading sensitive files to external servers.
+🌐 Live Demo: https://pdfeditingtool.vercel.app/
+
+PaperCraft Studio is a 100% client-side, privacy-focused web application that allows users to edit, annotate, organize, sign, watermark, and protect PDF documents directly in their browser—without uploading files to a server.
 
 ---
 
 > ⚠️ **Note on Scope & Capability**:  
-> *This tool handles approximately **70% of standard PDF operations** reliably directly in the browser (inline text editing, signature placement, page reordering/rotation, watermarking, and security). Complex vector graphics, non-standard embedded font encodings, or heavy print-production workflows may have limitations.*
+> *This tool handles approximately **70% of standard PDF operations** reliably directly in the browser (inline text editing, signature placement, page reordering/rotation, watermarking, and security).*  
+> *It is built for speed, privacy, and usability, not to replace full desktop PDF suites for every advanced workflow.*
 
 ---
 
@@ -59,4 +62,3 @@ PaperCraft Studio is a 100% client-side, privacy-focused web application that al
 - **PDF Engine**: `pdfjs-dist` (Page Rendering & Text Layer), `pdf-lib` (PDF Document Assembly, Page Reordering, Encryption & Watermarks)
 - **3D Graphics**: `three` (WebGL Hero Animation)
 - **Delights**: `canvas-confetti`
-
