@@ -190,8 +190,8 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
         const isModifiedOrNew = item.isModified || item.isNew;
         const isActivelyEditing = isSelected;
 
-        // Erase original canvas text whenever item is selected, modified, or new
-        const shouldEraseOriginal = isSelected || isModifiedOrNew;
+        // Erase original canvas text whenever existing text is selected, modified, or deleted (never for newly inserted text boxes)
+        const shouldEraseOriginal = !item.isNew && (isSelected || item.isModified || item.isDeleted);
         const origX = item.originalX !== undefined ? item.originalX : item.x;
         const origY = item.originalY !== undefined ? item.originalY : item.y;
         const origW = item.originalWidth !== undefined ? item.originalWidth : item.width;
@@ -206,16 +206,16 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
 
         return (
           <React.Fragment key={item.id}>
-            {/* White-out patch for original location if text is selected, modified, or new */}
+            {/* White-out patch for original location if existing text is selected, modified, or deleted */}
             {shouldEraseOriginal && (
               <div
                 style={{
                   left: `${origX}%`,
                   top: `${origY}%`,
-                  width: `${Math.min(100 - origX, origW + 1.5)}%`,
-                  height: `${origH + 0.4}%`,
+                  width: `${Math.min(100 - origX, origW)}%`,
+                  height: `${origH}%`,
                 }}
-                className="absolute bg-white z-20 pointer-events-none"
+                className="absolute bg-white z-10 pointer-events-none"
               />
             )}
 
@@ -228,7 +228,6 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
                 left: `${boxLeft}%`,
                 top: `${item.y}%`,
                 width: `${boxWidth}%`,
-                minHeight: `${item.height}%`,
                 fontSize: `${scaledFontSize}px`,
                 fontFamily: item.fontFamily,
                 fontWeight: item.fontWeight,
@@ -236,14 +235,12 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
                 textDecoration: item.textDecoration,
                 color: item.color || '#1C1917',
                 textAlign: item.textAlign,
-                lineHeight: '1.2',
+                lineHeight: '1.25',
               }}
-              className={`text-block-container absolute transition-none p-0 m-0 border outline-none ${
+              className={`text-block-container absolute transition-none p-0 m-0 border outline-none bg-transparent overflow-visible ${
                 isSelected
-                  ? 'border-blue-600 border-dashed bg-white z-30 ring-1 ring-blue-500/30 rounded-2xs'
-                  : isModifiedOrNew
-                  ? 'border-transparent bg-white z-20'
-                  : 'border-transparent hover:border-blue-400/60 hover:border-dashed bg-transparent z-10'
+                  ? 'border-blue-600 border-dashed z-30 ring-1 ring-blue-500/30 rounded-2xs'
+                  : 'border-transparent hover:border-blue-400/60 hover:border-dashed z-20'
               }`}
             >
               {/* PDF House Style Move Grip Handle */}
@@ -280,7 +277,7 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
                   value={item.text}
                   onChange={(e) => onUpdateText(item.id, e.target.value)}
                   rows={Math.max(1, item.text.split('\n').length)}
-                  className="w-full h-full text-stone-900 resize-none p-0 m-0 block select-text whitespace-pre-wrap focus:outline-none focus:ring-0 focus:border-none shadow-none ring-0 bg-white"
+                  className="w-full text-stone-900 resize-none p-0 m-0 block select-text whitespace-pre-wrap focus:outline-none focus:ring-0 focus:border-none shadow-none ring-0 bg-transparent overflow-visible"
                   style={{
                     fontSize: `${scaledFontSize}px`,
                     fontFamily: item.fontFamily,
@@ -288,13 +285,14 @@ export const TextEditLayer: React.FC<TextEditLayerProps> = ({
                     fontStyle: item.fontStyle,
                     textAlign: item.textAlign,
                     color: item.color || '#1C1917',
-                    lineHeight: '1.2',
+                    lineHeight: '1.25',
                     padding: '0px',
                     margin: '0px',
                     border: 'none',
                     outline: 'none',
                     boxShadow: 'none',
-                    background: 'white',
+                    background: 'transparent',
+                    height: 'auto',
                   }}
                   autoFocus={isSelected}
                 />

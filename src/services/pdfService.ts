@@ -1,6 +1,7 @@
 import * as pdfjsLib from 'pdfjs-dist';
 import { PDFDocument, rgb, degrees, StandardFonts } from 'pdf-lib';
 import { TextElement, Annotation, PageMeta, WatermarkConfig, SecurityConfig } from '../types/pdf';
+import { PdfSecurityService } from './pdfSecurityService';
 
 // Configure pdfjs worker URL
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
@@ -429,6 +430,15 @@ export class PdfService {
       }
     }
 
-    return await pdfDoc.save();
+    // 4. Apply Password Security / Encryption
+    if (security && security.isPasswordProtected && security.userPassword) {
+      PdfSecurityService.applyPasswordProtectionToDoc(
+        pdfDoc,
+        security.userPassword,
+        security.ownerPassword || security.userPassword
+      );
+    }
+
+    return await pdfDoc.save({ useObjectStreams: false });
   }
 }

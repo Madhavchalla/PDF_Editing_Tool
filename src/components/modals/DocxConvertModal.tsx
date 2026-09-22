@@ -44,7 +44,7 @@ export const DocxConvertModal: React.FC<DocxConvertModalProps> = ({
 
         {/* Modal Body */}
         <div className="p-6 space-y-6">
-          {/* Option 1: PDF to DOCX */}
+          {/* Option 1: Export PDF to DOCX */}
           <div className="p-4 rounded-xl border border-blue-200 bg-blue-50/50 dark:bg-blue-950/20 dark:border-blue-900 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="p-3 rounded-lg bg-blue-600 text-white shadow-sm">
@@ -73,42 +73,9 @@ export const DocxConvertModal: React.FC<DocxConvertModalProps> = ({
             </button>
           </div>
 
-          {/* Option 2: DOCX to PDF */}
-          <div className="p-4 rounded-xl border border-amber-200 bg-amber-50/50 dark:bg-amber-950/20 dark:border-amber-900 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-lg bg-[#C85A32] text-white shadow-sm">
-                <FileSpreadsheet className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-stone-900 dark:text-stone-100">
-                  Import Word (.docx) → Convert to PDF
-                </h4>
-                <p className="text-xs text-stone-600 dark:text-stone-400">
-                  Upload a Word document to convert & edit as a PDF.
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <input
-                type="file"
-                accept=".docx"
-                onChange={handleFileChange}
-                className="hidden"
-                id="docx-import-input"
-              />
-              <label
-                htmlFor="docx-import-input"
-                className="px-3.5 py-2 bg-[#C85A32] hover:bg-[#b24e2a] text-white font-semibold text-xs rounded-lg shadow-sm cursor-pointer inline-flex items-center gap-1.5 transition-colors"
-              >
-                <span>Choose DOCX</span>
-              </label>
-            </div>
-          </div>
-
           <div className="flex items-center gap-2 p-3 bg-stone-100 dark:bg-stone-800 rounded-lg text-xs text-stone-600 dark:text-stone-300">
             <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-            <span>High precision layout extraction: preserves text formatting, bold/italic, and paragraphs without errors.</span>
+            <span>High precision layout extraction: preserves text formatting, bold/italic, and page structure.</span>
           </div>
         </div>
 

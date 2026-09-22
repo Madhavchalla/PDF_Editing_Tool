@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, ShieldAlert, Lock, Check } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, ShieldAlert, Lock, Check, Eye, EyeOff } from 'lucide-react';
 import { SecurityConfig } from '../../types/pdf';
 
 interface SecurityModalProps {
@@ -15,8 +15,17 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({
   security,
   onUpdateSecurity,
 }) => {
-  const [password, setPassword] = useState(security.userPassword || '');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isProtected, setIsProtected] = useState(security.isPasswordProtected);
+
+  useEffect(() => {
+    if (isOpen) {
+      setPassword('');
+      setIsProtected(security.isPasswordProtected);
+      setShowPassword(false);
+    }
+  }, [isOpen, security]);
 
   if (!isOpen) return null;
 
@@ -68,13 +77,23 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({
               <label className="block text-xs font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Encryption Password:
               </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full text-xs p-2.5 border border-stone-300 dark:border-stone-700 rounded-md bg-white dark:bg-[#282724] outline-none focus:border-[#C85A32]"
-                placeholder="Enter password..."
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full text-xs p-2.5 pr-9 border border-stone-300 dark:border-stone-700 rounded-md bg-white dark:bg-[#282724] outline-none focus:border-[#C85A32]"
+                  placeholder="Enter password..."
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-700 dark:hover:text-stone-300"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
               <p className="text-[11px] text-stone-500 mt-1">
                 Users will be prompted to enter this password to view or edit the downloaded PDF.
               </p>

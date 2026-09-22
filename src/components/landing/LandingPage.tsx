@@ -82,7 +82,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           >
             <input
               type="file"
-              accept=".pdf,.docx"
+              accept=".pdf"
               onChange={handleFileChange}
               className="absolute inset-0 opacity-0 cursor-pointer z-10"
               id="hero-file-input"
@@ -94,10 +94,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               <h3 className="font-serif font-bold text-xl text-stone-900">
-                Drop your PDF or DOCX file here
+                Drop your PDF file here
               </h3>
               <p className="text-xs text-stone-500 mt-1">
-                Supports PDF documents and Microsoft Word (.docx) files
+                Supports all standard PDF documents for full inline editing
               </p>
 
               <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -122,8 +122,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
           <div className="p-4 bg-white border border-[#E5E0D8] rounded-xl shadow-paper-sm">
             <FileSpreadsheet className="w-5 h-5 text-blue-600 mb-2" />
-            <h4 className="font-bold text-xs text-stone-900">PDF ↔ DOCX Conversion</h4>
-            <p className="text-[11px] text-stone-500 mt-0.5">Export PDF to Word docx or import docx to PDF seamlessly.</p>
+            <h4 className="font-bold text-xs text-stone-900">Export to MS Word</h4>
+            <p className="text-[11px] text-stone-500 mt-0.5">Export PDF layout & text into editable Word docx files.</p>
           </div>
 
           <div className="p-4 bg-white border border-[#E5E0D8] rounded-xl shadow-paper-sm">
